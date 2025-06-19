@@ -7,8 +7,10 @@ RUN npm install
 
 COPY . .
 
+COPY notes.json .
+
 RUN npm run build
 
-EXPOSE 5000
+EXPOSE 8080
 
 CMD ["node", "dist/app.js"]
