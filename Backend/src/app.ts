@@ -18,10 +18,7 @@ const DATA_FILE = path.join(__dirname, '../notes.json');
 
 app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
 app.use(bodyParser.json());
-console.log("👀 Entrando al bloque que debería iniciar el servidor...");
-app.listen(PORT, () => {
-  console.log(`✅ Backend corriendo en http://localhost:${PORT}`);
-});
+//console.log("👀 Entrando al bloque que debería iniciar el servidor...");
 
 app.use(session({
   secret: 'clave-super-secreta',
@@ -91,12 +88,3 @@ app.post('/api/logout', (req: Request, res: Response) => {
 app.listen(PORT, () => {
   console.log(`✅ Backend corriendo en http://localhost:${PORT}`);
 });
-
-
-console.log("🔍 Preparando para escuchar en el puerto...");
-
-app.listen(PORT, () => {
-  console.log(`✅ Backend corriendo en http://localhost:${PORT}`);
-});
-
-console.log("🟢 ¿Llegamos después del listen?");

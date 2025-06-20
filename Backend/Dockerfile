@@ -5,9 +5,7 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 
-COPY . .
-
-COPY notes.json .
+COPY . .    
 
 RUN npm run build
 
