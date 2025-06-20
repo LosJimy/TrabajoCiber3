@@ -71,11 +71,20 @@ app.post('/api/notas', requireAuth, (req: Request, res: Response) => {
 // Ruta para login simple
 app.post('/api/login', (req: Request, res: Response) => {
   const { username, password } = req.body;
+
   if (username === 'admin' && password === '123456') {
     req.session.user = username;
-    res.json({ success: true });
+
+    res.json({
+      message: 'Inicio de sesión exitoso',
+      user: { username },
+      sessionId: req.sessionID // 🔍 útil para debugging o auditoría
+    });
   } else {
-    res.status(401).json({ error: 'Credenciales incorrectas' });
+    res.status(401).json({
+      error: 'Credenciales incorrectas',
+      message: 'El nombre de usuario o la contraseña no coinciden'
+    });
   }
 });
 

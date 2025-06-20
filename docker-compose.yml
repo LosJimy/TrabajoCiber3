@@ -3,7 +3,12 @@ services:
     build: ./Backend
     ports:
       - "8080:8080"
-    restart: always
+    develop:
+      watch:
+        - action: sync
+          path: ./Backend
+          target: /app
+
 
   frontend:
     build: ./Frontend
@@ -11,4 +16,3 @@ services:
       - "3000:3000"
     volumes:
       - ./Frontend:/app
-    restart: always
