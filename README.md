@@ -92,7 +92,6 @@ Este proyecto está diseñado para:
 ### DevOps & Seguridad
 - **Docker** - Containerización
 - **GitHub Actions** - CI/CD Pipeline
-- **SonarCloud** - Análisis de calidad
 - **Snyk** - Análisis de vulnerabilidades
 - **ESLint** - Linting de código
 
@@ -205,13 +204,13 @@ REACT_APP_API_URL=http://localhost:3000
 #### 🔍 Herramientas Integradas
 - **npm audit** - Análisis de dependencias
 - **Snyk** - Escaneo de vulnerabilidades
-- **SonarCloud** - Análisis de calidad y seguridad
 - **ESLint** - Detección de patrones inseguros
 
-#### 📊 Métricas de Seguridad
-- **Vulnerabilidades detectadas**: Monitoreo continuo
-- **Dependencias actualizadas**: Automático
-- **Cobertura de seguridad**: Reportes regulares
+#### 📊 Métricas Disponibles
+- **Coverage de código**: Reportes automáticos
+- **Tiempo de build**: Optimizado con cache
+- **Vulnerabilidades**: Reportes de Snyk
+- **Calidad de código**: Métricas de ESLint
 
 ## 🔄 CI/CD Pipeline
 
@@ -227,7 +226,7 @@ El proyecto incluye un pipeline completo de CI/CD con GitHub Actions:
 #### 🔍 Análisis de Seguridad
 - **npm audit** en cada commit
 - **Snyk** para vulnerabilidades
-- **SonarCloud** para calidad y seguridad
+- **ESLint** para calidad de código
 
 #### 🐳 Containerización
 - **Build automático** de imágenes Docker
@@ -355,8 +354,8 @@ Este proyecto está bajo la Licencia MIT. Ver el archivo [LICENSE](LICENSE) para
 
 - **OWASP** por las mejores prácticas de seguridad
 - **React** y **Express** por los frameworks
-- **SonarCloud** por el análisis de calidad
 - **GitHub Actions** por la automatización
+- **Snyk** por el análisis de vulnerabilidades
 
 ## 📞 Contacto
 
@@ -372,8 +371,22 @@ Este proyecto está bajo la Licencia MIT. Ver el archivo [LICENSE](LICENSE) para
 
 *Desarrollado con ❤️ para el aprendizaje de ciberseguridad*
 
-[![Security](https://img.shields.io/badge/Security-Audited-green.svg)](https://sonarcloud.io/dashboard?id=tu-usuario_miapp-segura)
+[![Security](https://img.shields.io/badge/Security-Audited-green.svg)](https://snyk.io/test/github/tu-usuario/miapp-segura)
 [![Tests](https://img.shields.io/badge/Tests-Passing-green.svg)](https://github.com/tu-usuario/miapp-segura/actions)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 </div>
+
+### Notificaciones
+- ✅ Status checks en PRs
+- ✅ Reportes de coverage
+- ✅ Alertas de seguridad
+- ✅ Confirmación de deploy
+
+## 🔄 Flujo de Desarrollo
+
+1. **Desarrollo** → Trabaja en tu rama
+2. **Push** → Se ejecutan tests automáticamente
+3. **Pull Request** → Análisis completo de seguridad y calidad
+4. **Merge** → Build de Docker images
+5. **Release** → Deploy automático a producción

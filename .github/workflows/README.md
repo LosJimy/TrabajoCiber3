@@ -1,100 +1,55 @@
 # CI/CD Pipeline - MiApp Segura
 
-Este workflow de GitHub Actions automatiza todo el proceso de desarrollo, testing y despliegue de la aplicación MiApp Segura.
+Este workflow de GitHub Actions automatiza el proceso de desarrollo, testing y despliegue de la aplicación MiApp Segura.
 
 ## 🚀 Jobs del Pipeline
 
-### 1. **Frontend Tests**
-- ✅ Instala dependencias del frontend
-- ✅ Ejecuta tests unitarios con coverage
-- ✅ Construye la aplicación React
-- ✅ Sube reportes de coverage a Codecov
-
-### 2. **Backend Tests**
-- ✅ Instala dependencias del backend
-- ✅ Ejecuta tests unitarios
-- ✅ Compila TypeScript a JavaScript
-
-### 3. **Security Analysis**
-- ✅ Ejecuta `npm audit` en frontend y backend
-- ✅ Escaneo de vulnerabilidades con Snyk
-- ✅ Detecta dependencias vulnerables
-- ✅ Reporta vulnerabilidades de alta severidad
-
-### 4. **Code Quality**
-- ✅ Ejecuta ESLint en frontend y backend
+### 1. **Security & Code Analysis**
+- ✅ Instala dependencias de frontend y backend
+- ✅ Ejecuta `npm audit` para detectar vulnerabilidades
+- ✅ Ejecuta ESLint (si está configurado)
 - ✅ Verificación de tipos TypeScript
 - ✅ Análisis de calidad de código
-- ✅ Detección de errores de sintaxis
 
-### 5. **SonarCloud Analysis** 🆕
-- ✅ Análisis completo de calidad de código
-- ✅ Detección de bugs y vulnerabilidades
-- ✅ Métricas de mantenibilidad y confiabilidad
-- ✅ Análisis de duplicación de código
-- ✅ Reportes de cobertura integrados
-- ✅ Dashboard web con métricas históricas
+### 2. **CodeQL Analysis** 🆕
+- ✅ Análisis semántico de código JavaScript/TypeScript
+- ✅ Detección de vulnerabilidades de seguridad
+- ✅ Análisis de SQL Injection, XSS, Path Traversal
+- ✅ Detección de secretos en código
+- ✅ Alertas automáticas en GitHub Security tab
 
-### 6. **Docker Build**
+### 3. **Frontend Tests**
+- ✅ Instala dependencias del frontend
+- ✅ Ejecuta tests unitarios (si existen)
+- ✅ Construye la aplicación React
+- ✅ Verifica que el build funciona
+
+### 4. **Backend Tests**
+- ✅ Instala dependencias del backend
+- ✅ Ejecuta tests unitarios (si existen)
+- ✅ Compila TypeScript a JavaScript
+- ✅ Verifica que el build funciona
+
+### 5. **Docker Build**
 - ✅ Construye imagen Docker del frontend
 - ✅ Construye imagen Docker del backend
 - ✅ Sube imágenes al GitHub Container Registry
 - ✅ Usa cache para builds más rápidos
-
-### 7. **Integration Tests**
-- ✅ Tests de integración con base de datos
-- ✅ Verifica que frontend y backend se comunican
-- ✅ Tests end-to-end básicos
-
-### 8. **Deploy** (Solo en releases)
-- ✅ Despliegue automático a producción
-- ✅ Notificaciones de deploy exitoso
 
 ## 📋 Triggers
 
 El workflow se ejecuta en:
 - **Push** a ramas `main` o `develop`
 - **Pull Request** hacia `main`
-- **Release** publicado
 
 ## 🔧 Configuración Requerida
 
-### Secrets de GitHub
-
-Configura estos secrets en tu repositorio:
+### Secrets de GitHub (Opcionales)
 
 ```bash
-# Para análisis de seguridad con Snyk
+# Para análisis de seguridad con Snyk (opcional)
 SNYK_TOKEN=tu_token_de_snyk
-
-# Para análisis con SonarCloud
-SONAR_TOKEN=tu_token_de_sonarcloud
-
-# Para deploy (opcional)
-DEPLOY_KEY=tu_clave_de_deploy
 ```
-
-### Configuración de SonarCloud
-
-1. **Crear cuenta en SonarCloud:**
-   - Ve a [sonarcloud.io](https://sonarcloud.io)
-   - Crea una cuenta gratuita
-   - Crea una nueva organización
-
-2. **Crear proyecto en SonarCloud:**
-   - Crea un nuevo proyecto
-   - Selecciona GitHub como proveedor
-   - Conecta tu repositorio
-
-3. **Obtener token:**
-   - Ve a Account → Security
-   - Genera un nuevo token
-   - Guárdalo como `SONAR_TOKEN` en GitHub Secrets
-
-4. **Actualizar configuración:**
-   - Edita `sonar-project.properties`
-   - Cambia `tu-usuario` por tu nombre de usuario de SonarCloud
-   - Cambia `tu-usuario_miapp-segura` por tu project key
 
 ### Scripts de package.json
 
@@ -104,8 +59,9 @@ Asegúrate de tener estos scripts en tus `package.json`:
 ```json
 {
   "scripts": {
-    "test": "react-scripts test",
+    "start": "react-scripts start",
     "build": "react-scripts build",
+    "test": "react-scripts test",
     "lint": "eslint src --ext .ts,.tsx"
   }
 }
@@ -115,10 +71,11 @@ Asegúrate de tener estos scripts en tus `package.json`:
 ```json
 {
   "scripts": {
-    "test": "jest",
+    "start": "node dist/app.js",
     "build": "tsc",
-    "lint": "eslint src --ext .ts",
-    "test:integration": "jest --config jest.integration.config.js"
+    "dev": "ts-node src/app.ts",
+    "test": "jest",
+    "lint": "eslint src --ext .ts"
   }
 }
 ```
@@ -127,33 +84,51 @@ Asegúrate de tener estos scripts en tus `package.json`:
 
 ### Análisis Automático
 - **npm audit**: Detecta vulnerabilidades en dependencias
-- **Snyk**: Análisis profundo de seguridad
-- **SonarCloud**: Análisis completo de calidad y seguridad
+- **CodeQL**: Análisis semántico de código y detección de vulnerabilidades
 - **ESLint**: Detección de patrones inseguros
 - **TypeScript**: Verificación de tipos para prevenir errores
+
+### CodeQL - Análisis Semántico
+
+CodeQL es una herramienta avanzada de análisis de código que:
+
+#### 🔍 **Qué detecta:**
+- **SQL Injection** - Inyecciones de SQL
+- **XSS** - Cross-Site Scripting
+- **Path Traversal** - Travesía de directorios
+- **Command Injection** - Inyección de comandos
+- **Secretos en código** - API keys, passwords
+- **Configuraciones inseguras** - Headers, CORS, etc.
+
+#### 📊 **Reportes:**
+- **Alertas automáticas** en GitHub Security tab
+- **Análisis detallado** con ejemplos de código
+- **Sugerencias de corrección** automáticas
+- **Historial** de vulnerabilidades
+
+#### ⚙️ **Configuración:**
+- Archivo de configuración: `.github/codeql/codeql-config.yml`
+- Análisis automático en cada PR
+- Integración con GitHub Security tab
 
 ### Buenas Prácticas
 - ✅ Tests automáticos en cada commit
 - ✅ Análisis de seguridad antes del merge
-- ✅ Quality Gate de SonarCloud
 - ✅ Builds reproducibles con Docker
-- ✅ Deploy solo después de tests exitosos
+- ✅ Verificación de tipos TypeScript
 
 ## 📊 Monitoreo
 
 ### Métricas Disponibles
-- **Coverage de código**: Reportes automáticos
-- **Tiempo de build**: Optimizado con cache
-- **Vulnerabilidades**: Reportes de Snyk y SonarCloud
-- **Calidad de código**: Métricas de ESLint y SonarCloud
-- **Dashboard SonarCloud**: Métricas históricas y tendencias
+- **Build status**: Estado de cada job
+- **Test results**: Resultados de tests
+- **Docker images**: Imágenes construidas y publicadas
+- **Security audit**: Reportes de vulnerabilidades
 
 ### Notificaciones
 - ✅ Status checks en PRs
-- ✅ Reportes de coverage
-- ✅ Alertas de seguridad
-- ✅ Quality Gate de SonarCloud
-- ✅ Confirmación de deploy
+- ✅ Build notifications
+- ✅ Security alerts
 
 ## 🚨 Troubleshooting
 
@@ -180,12 +155,11 @@ npm audit fix
 npm update
 ```
 
-**4. SonarCloud falla**
+**4. TypeScript errors**
 ```bash
-# Verifica configuración
-# 1. Token válido en GitHub Secrets
-# 2. Project key correcto en sonar-project.properties
-# 3. Proyecto creado en SonarCloud
+# Verifica tipos
+cd TrabajoCiber3/Frontend && npx tsc --noEmit
+cd TrabajoCiber3/Backend && npx tsc --noEmit
 ```
 
 ## 🔄 Flujo de Desarrollo
@@ -193,9 +167,7 @@ npm update
 1. **Desarrollo** → Trabaja en tu rama
 2. **Push** → Se ejecutan tests automáticamente
 3. **Pull Request** → Análisis completo de seguridad y calidad
-4. **SonarCloud** → Quality Gate y métricas
-5. **Merge** → Build de Docker images
-6. **Release** → Deploy automático a producción
+4. **Merge** → Build de Docker images
 
 ## 📈 Mejoras Futuras
 
@@ -206,4 +178,17 @@ npm update
 - [ ] Métricas de performance
 - [ ] Tests de carga automatizados
 - [ ] Integración con OWASP ZAP
-- [ ] Análisis de secretos en código 
+- [ ] Análisis de secretos en código
+
+## 🎯 Configuración Rápida
+
+### Para usar Snyk (Opcional):
+
+1. **Crear cuenta** en [snyk.io](https://snyk.io)
+2. **Obtener token** y agregarlo como `SNYK_TOKEN` en GitHub Secrets
+
+## 📞 Soporte
+
+- **Issues**: [GitHub Issues](https://github.com/tu-usuario/miapp-segura/issues)
+- **Documentación**: [Wiki del Proyecto](https://github.com/tu-usuario/miapp-segura/wiki)
+- **Workflow**: [GitHub Actions](https://github.com/tu-usuario/miapp-segura/actions) 
