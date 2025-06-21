@@ -30,42 +30,42 @@ jobs:
           Backend/package-lock.json
     - name: Install Frontend dependencies
       run: |
-        cd TrabajoCiber3/Frontend
+        cd Frontend
         npm ci
         
     - name: Install Backend dependencies
       run: |
-        cd TrabajoCiber3/Backend
+        cd Backend
         npm ci
         
     - name: Run npm audit (Frontend)
       run: |
-        cd TrabajoCiber3/Frontend
+        cd Frontend
         npm audit --audit-level=moderate || true
         
     - name: Run npm audit (Backend)
       run: |
-        cd TrabajoCiber3/Backend
+        cd Backend
         npm audit --audit-level=moderate || true
         
     - name: Run ESLint (Frontend)
       run: |
-        cd TrabajoCiber3/Frontend
+        cd Frontend
         npm run lint || echo "ESLint not configured, skipping..."
         
     - name: Run ESLint (Backend)
       run: |
-        cd TrabajoCiber3/Backend
+        cd Backend
         npm run lint || echo "ESLint not configured, skipping..."
         
     - name: TypeScript check (Frontend)
       run: |
-        cd TrabajoCiber3/Frontend
+        cd Frontend
         npx tsc --noEmit || echo "TypeScript check failed, but continuing..."
         
     - name: TypeScript check (Backend)
       run: |
-        cd TrabajoCiber3/Backend
+        cd Backend
         npx tsc --noEmit || echo "TypeScript check failed, but continuing..."
 
   # Job para análisis semántico con CodeQL
@@ -135,17 +135,17 @@ jobs:
         
     - name: Install Frontend dependencies
       run: |
-        cd TrabajoCiber3/Frontend
+        cd Frontend
         npm ci
         
     - name: Run Frontend tests
       run: |
-        cd TrabajoCiber3/Frontend
+        cd Frontend
         npm test -- --watchAll=false --passWithNoTests || echo "Tests failed, but continuing..."
         
     - name: Build Frontend
       run: |
-        cd TrabajoCiber3/Frontend
+        cd Frontend
         npm run build
 
   # Job para testing del Backend
@@ -166,17 +166,17 @@ jobs:
         
     - name: Install Backend dependencies
       run: |
-        cd TrabajoCiber3/Backend
+        cd Backend
         npm ci
         
     - name: Run Backend tests
       run: |
-        cd TrabajoCiber3/Backend
+        cd Backend
         npm test -- --passWithNoTests || echo "Tests failed, but continuing..."
         
     - name: Build Backend
       run: |
-        cd TrabajoCiber3/Backend
+        cd Backend
         npm run build
 
   # Job para construcción de Docker images
