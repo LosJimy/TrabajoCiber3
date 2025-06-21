@@ -25,14 +25,9 @@ jobs:
       with:
         node-version: '22'
         cache: 'npm'
-        cache-dependency-path: TrabajoCiber3/Backend/package-lock.json
-        cache-dependency-path: TrabajoCiber3/Frontend/package-lock.json
-        
-    - name: Install root dependencies
-      run: |
-        cd TrabajoCiber3
-        npm ci
-        
+        cache-dependency-path: |
+          TrabajoCiber3/Frontend/package-lock.json
+          TrabajoCiber3/Backend/package-lock.json
     - name: Install Frontend dependencies
       run: |
         cd TrabajoCiber3/Frontend
@@ -42,11 +37,6 @@ jobs:
       run: |
         cd TrabajoCiber3/Backend
         npm ci
-        
-    - name: Run npm audit (Root)
-      run: |
-        cd TrabajoCiber3
-        npm audit --audit-level=moderate || true
         
     - name: Run npm audit (Frontend)
       run: |
@@ -102,7 +92,9 @@ jobs:
       with:
         node-version: '22'
         cache: 'npm'
-        cache-dependency-path: TrabajoCiber3/package-lock.json
+        cache-dependency-path: |
+          TrabajoCiber3/Frontend/package-lock.json
+          TrabajoCiber3/Backend/package-lock.json
         
     - name: Install dependencies for CodeQL
       run: |
