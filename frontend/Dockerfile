@@ -1,25 +1,21 @@
-FROM node:18
+FROM node:22-alpine
 
-# Crear directorio de trabajo
-WORKDIR /app
+WORKDIR /usr/src/frontend
 
-# Copiar archivos de dependencias
 COPY package*.json ./
 
-# Instalar dependencias
 RUN npm install
 
-# Copiar el resto del frontend
 COPY . .
 
-# Construir la app para producción
 RUN npm run build
 
-# Instalar servidor estático
-RUN npm install -g serve
+RUN npm install -g http-server
 
-# Exponer el puerto 3000
-EXPOSE 3000
+EXPOSE 8080
 
-# Comando para ejecutar la app
-CMD ["serve", "-s", "build"]
+ENV PORT=8080
+
+ENV REACT_APP_PORT=808
+
+CMD ["npm", "run", "start"]

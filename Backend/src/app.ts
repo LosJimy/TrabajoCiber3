@@ -12,11 +12,11 @@ declare module 'express-session' {
 }
 
 const app = express();
-const PORT = 8080;
+const PORT = 3000;
 
 const DATA_FILE = path.join(__dirname, '../notes.json');
 
-app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
+app.use(cors({ origin: 'http://localhost:8080', credentials: true }));
 app.use(bodyParser.json());
 //console.log("👀 Entrando al bloque que debería iniciar el servidor...");
 
@@ -66,6 +66,20 @@ app.post('/api/notas', requireAuth, (req: Request, res: Response) => {
   notes.push(newNote);
   saveNotes(notes);
   res.status(201).json(newNote);
+});
+
+app.delete('/api/notas/:id', requireAuth, (req: Request, res: Response) => {
+  const noteId = parseInt(req.params.id);
+  const notes = loadNotes();
+  const noteIndex = notes.findIndex(note => note.id === noteId);
+  
+  if (noteIndex === -1) {
+    return res.status(404).json({ error: 'Nota no encontrada' });
+  }
+  
+  const deletedNote = notes.splice(noteIndex, 1)[0];
+  saveNotes(notes);
+  res.json({ message: 'Nota eliminada exitosamente', deletedNote });
 });
 
 // Ruta para login simple
