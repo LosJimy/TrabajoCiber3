@@ -25,7 +25,7 @@ jobs:
       with:
         node-version: '22'
         cache: 'npm'
-        cache-dependency-path: |
+        cache-dependency-path: >
           TrabajoCiber3/Frontend/package-lock.json
           TrabajoCiber3/Backend/package-lock.json
     - name: Install Frontend dependencies
