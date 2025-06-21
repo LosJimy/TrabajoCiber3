@@ -25,7 +25,8 @@ jobs:
       with:
         node-version: '22'
         cache: 'npm'
-        cache-dependency-path: TrabajoCiber3/package-lock.json
+        cache-dependency-path: TrabajoCiber3/Backend/package-lock.json
+        cache-dependency-path: TrabajoCiber3/Frontend/package-lock.json
         
     - name: Install root dependencies
       run: |
