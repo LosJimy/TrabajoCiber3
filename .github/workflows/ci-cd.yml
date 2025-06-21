@@ -127,6 +127,28 @@ jobs:
         args: --severity-threshold=high
         path: TrabajoCiber3/Backend
 
+    owasp-scan:
+    name: OWASP Dependency-Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run OWASP Dependency-Check
+        run: |
+          docker run --rm -v "${{ github.workspace }}:/src" owasp/dependency-check \
+            --project "TrabajoCiber3" \
+            --scan /src/TrabajoCiber3/Backend \
+            --format "HTML" \
+            --out /src/owasp-report
+
+      - name: Upload OWASP report
+        uses: actions/upload-artifact@v4
+        with:
+          name: dependency-check-report
+          path: owasp-report/dependency-check-report.html
+
   # Job para análisis de código
   code-quality:
     name: Code Quality
