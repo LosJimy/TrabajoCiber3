@@ -25,6 +25,12 @@ jobs:
       with:
         node-version: '22'
         cache: 'npm'
+        cache-dependency-path: TrabajoCiber3/package-lock.json
+        
+    - name: Install root dependencies
+      run: |
+        cd TrabajoCiber3
+        npm ci
         
     - name: Install Frontend dependencies
       run: |
@@ -35,6 +41,11 @@ jobs:
       run: |
         cd TrabajoCiber3/Backend
         npm ci
+        
+    - name: Run npm audit (Root)
+      run: |
+        cd TrabajoCiber3
+        npm audit --audit-level=moderate || true
         
     - name: Run npm audit (Frontend)
       run: |
@@ -85,6 +96,20 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
       
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '22'
+        cache: 'npm'
+        cache-dependency-path: TrabajoCiber3/package-lock.json
+        
+    - name: Install dependencies for CodeQL
+      run: |
+        cd TrabajoCiber3
+        npm ci
+        cd Frontend && npm ci
+        cd ../Backend && npm ci
+        
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v2
       with:
