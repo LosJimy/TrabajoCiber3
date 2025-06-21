@@ -1,6 +1,6 @@
 # 🔐 MiApp Segura - Aplicación de Notas con Seguridad Avanzada
 
-Una aplicación web moderna para gestión de notas personales con enfoque en ciberseguridad, implementando las mejores prácticas de seguridad web y análisis de vulnerabilidades.
+Una aplicación web moderna para gestión de notas personales con enfoque en ciberseguridad, implementando las mejores prácticas de seguridad web y análisis de vulnerabilidades. (solo pido pasar nada mas)
 
 ## 📋 Tabla de Contenidos
 
