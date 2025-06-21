@@ -30,12 +30,12 @@ jobs:
           Backend/package-lock.json
     - name: Install Frontend dependencies
       run: |
-        cd Frontend
+        cd TrabajoCiber3/Frontend
         npm ci
-        
+    
     - name: Install Backend dependencies
       run: |
-        cd Backend
+        cd TrabajoCiber3/Backend
         npm ci
         
     - name: Run npm audit (Frontend)
