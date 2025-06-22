@@ -7,8 +7,8 @@ queries:
 
 # Incluir únicamente el código fuente de Frontend y Backend
 paths:
-  - "TrabajoCiber3/Frontend/src"
-  - "TrabajoCiber3/Backend/src"
+  - "Frontend/src"
+  - "Backend/src"
 
 # Ignorar archivos de dependencias, compilación, cobertura y pruebas
 paths-ignore:
