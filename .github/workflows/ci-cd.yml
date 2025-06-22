@@ -25,29 +25,29 @@ jobs:
           node-version: '22'
           cache: 'npm'
           cache-dependency-path: |
-            ./package-lock.json
+            ./frontend/package-lock.json
             ./Backend/package-lock.json
 
       - name: Install Frontend dependencies
-        run: npm ci
+        run: cd frontend && npm ci
 
       - name: Install Backend dependencies
         run: cd Backend && npm ci
 
       - name: Run npm audit (Frontend)
-        run: npm audit --audit-level=moderate || true
+        run: cd frontend && npm audit --audit-level=moderate || true
 
       - name: Run npm audit (Backend)
         run: cd Backend && npm audit --audit-level=moderate || true
 
       - name: Run ESLint (Frontend)
-        run: npm run lint || echo "ESLint not configured, skipping..."
+        run: cd frontend && npm run lint || echo "ESLint not configured, skipping..."
 
       - name: Run ESLint (Backend)
         run: cd Backend && npm run lint || echo "ESLint not configured, skipping..."
 
       - name: TypeScript check (Frontend)
-        run: npx tsc --noEmit || echo "TypeScript check failed, but continuing..."
+        run: cd frontend && npx tsc --noEmit || echo "TypeScript check failed, but continuing..."
 
       - name: TypeScript check (Backend)
         run: cd Backend && npx tsc --noEmit || echo "TypeScript check failed, but continuing..."
@@ -76,13 +76,13 @@ jobs:
           node-version: '22'
           cache: 'npm'
           cache-dependency-path: |
-            ./package-lock.json
+            ./frontend/package-lock.json
             ./Backend/package-lock.json
 
       - name: Install dependencies
         run: |
-          npm ci
-          cd Backend && npm ci
+          cd frontend && npm ci
+          cd ../Backend && npm ci
 
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v2
@@ -111,16 +111,16 @@ jobs:
         with:
           node-version: '22'
           cache: 'npm'
-          cache-dependency-path: ./package-lock.json
+          cache-dependency-path: ./frontend/package-lock.json
 
       - name: Install Frontend dependencies
-        run: npm ci
+        run: cd frontend && npm ci
 
       - name: Run Frontend tests
-        run: npm test -- --watchAll=false --passWithNoTests || echo "Tests failed, but continuing..."
+        run: cd frontend && npm test -- --watchAll=false --passWithNoTests || echo "Tests failed, but continuing..."
 
       - name: Build Frontend
-        run: npm run build
+        run: cd frontend && npm run build
 
   backend-test:
     name: Backend Tests
@@ -168,8 +168,8 @@ jobs:
       - name: Build and push Frontend image
         uses: docker/build-push-action@v5
         with:
-          context: .
-          file: ./Dockerfile
+          context: ./frontend
+          file: ./frontend/Dockerfile
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/frontend:${{ github.sha }}
           cache-from: type=gha
