@@ -2,16 +2,16 @@ name: CI/CD Pipeline - MiApp Segura
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [ main, develop, a ]
   pull_request:
-    branches: [ main ]
+    branches: [ main, develop, a ]
+
 
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
 
 jobs:
-  # Job para análisis de seguridad y calidad de código
   security-analysis:
     name: Security & Code Analysis
     runs-on: ubuntu-latest
@@ -26,8 +26,8 @@ jobs:
         node-version: '22'
         cache: 'npm'
         cache-dependency-path: |
-          Frontend/package-lock.json
-          Backend/package-lock.json
+          TrabajoCiber3/Frontend/package-lock.json
+          TrabajoCiber3/Backend/package-lock.json
 
     - name: Install Frontend dependencies
       run: |
@@ -41,35 +41,34 @@ jobs:
 
     - name: Run npm audit (Frontend)
       run: |
-        cd Frontend
+        cd TrabajoCiber3/Frontend
         npm audit --audit-level=moderate || true
 
     - name: Run npm audit (Backend)
       run: |
-        cd Backend
+        cd TrabajoCiber3/Backend
         npm audit --audit-level=moderate || true
 
     - name: Run ESLint (Frontend)
       run: |
-        cd Frontend
+        cd TrabajoCiber3/Frontend
         npm run lint || echo "ESLint not configured, skipping..."
 
     - name: Run ESLint (Backend)
       run: |
-        cd Backend
+        cd TrabajoCiber3/Backend
         npm run lint || echo "ESLint not configured, skipping..."
 
     - name: TypeScript check (Frontend)
       run: |
-        cd Frontend
+        cd TrabajoCiber3/Frontend
         npx tsc --noEmit || echo "TypeScript check failed, but continuing..."
 
     - name: TypeScript check (Backend)
       run: |
-        cd Backend
+        cd TrabajoCiber3/Backend
         npx tsc --noEmit || echo "TypeScript check failed, but continuing..."
 
-  # Job para análisis semántico con CodeQL
   codeql-analysis:
     name: CodeQL Analysis
     runs-on: ubuntu-latest
@@ -99,9 +98,7 @@ jobs:
 
     - name: Install dependencies for CodeQL
       run: |
-        cd TrabajoCiber3
-        npm ci
-        cd Frontend && npm ci
+        cd TrabajoCiber3/Frontend && npm ci
         cd ../Backend && npm ci
 
     - name: Initialize CodeQL
@@ -118,7 +115,6 @@ jobs:
       with:
         category: "/language:${{matrix.language}}"
 
-  # Job para testing del Frontend
   frontend-test:
     name: Frontend Tests
     runs-on: ubuntu-latest
@@ -136,20 +132,19 @@ jobs:
 
     - name: Install Frontend dependencies
       run: |
-        cd Frontend
+        cd TrabajoCiber3/Frontend
         npm ci
 
     - name: Run Frontend tests
       run: |
-        cd Frontend
+        cd TrabajoCiber3/Frontend
         npm test -- --watchAll=false --passWithNoTests || echo "Tests failed, but continuing..."
 
     - name: Build Frontend
       run: |
-        cd Frontend
+        cd TrabajoCiber3/Frontend
         npm run build
 
-  # Job para testing del Backend
   backend-test:
     name: Backend Tests
     runs-on: ubuntu-latest
@@ -167,20 +162,19 @@ jobs:
 
     - name: Install Backend dependencies
       run: |
-        cd Backend
+        cd TrabajoCiber3/Backend
         npm ci
 
     - name: Run Backend tests
       run: |
-        cd Backend
+        cd TrabajoCiber3/Backend
         npm test -- --passWithNoTests || echo "Tests failed, but continuing..."
 
     - name: Build Backend
       run: |
-        cd Backend
+        cd TrabajoCiber3/Backend
         npm run build
 
-  # Job para construcción de Docker images + Trivy
   docker-build:
     name: Build Docker Images
     runs-on: ubuntu-latest

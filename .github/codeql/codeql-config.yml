@@ -1,42 +1,16 @@
 name: "CodeQL Config"
 
-# Configuración para análisis de seguridad con CodeQL
+# Consultas de seguridad y calidad
 queries:
-  # Consultas de seguridad extendidas
   - uses: security-and-quality
   - uses: security-extended
-  
-  # Consultas personalizadas para vulnerabilidades específicas
-  - name: SQL Injection
-    uses: security-and-quality
-    with:
-      tag: security
-      severity: error
-      
-  - name: XSS Detection
-    uses: security-and-quality
-    with:
-      tag: security
-      severity: error
-      
-  - name: Path Traversal
-    uses: security-and-quality
-    with:
-      tag: security
-      severity: error
-      
-  - name: Command Injection
-    uses: security-and-quality
-    with:
-      tag: security
-      severity: error
 
-# Configuración de paths
+# Incluir únicamente el código fuente de Frontend y Backend
 paths:
   - "TrabajoCiber3/Frontend/src"
   - "TrabajoCiber3/Backend/src"
 
-# Excluir archivos y directorios
+# Ignorar archivos de dependencias, compilación, cobertura y pruebas
 paths-ignore:
   - "**/node_modules"
   - "**/dist"
@@ -46,21 +20,3 @@ paths-ignore:
   - "**/*.test.tsx"
   - "**/*.spec.ts"
   - "**/*.spec.tsx"
-
-# Configuración de alertas
-alert-threshold: warning
-error-threshold: error
-
-# Configuración de análisis
-analysis:
-  # Análisis de dependencias
-  dependency-analysis:
-    enabled: true
-    
-  # Análisis de secretos
-  secret-scanning:
-    enabled: true
-    
-  # Análisis de configuración
-  configuration-analysis:
-    enabled: true 
